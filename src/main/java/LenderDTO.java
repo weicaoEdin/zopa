@@ -1,7 +1,7 @@
 public class LenderDTO implements Comparable{
 	
 	private String name;
-	private float rate;
+	private double rate;
 	private int availableFund;
 	private int totalFund;
 	
@@ -9,6 +9,7 @@ public class LenderDTO implements Comparable{
 		this.name = name;
 		this.rate = rate;
 		this.totalFund = totalFund;
+		this.availableFund = totalFund;
 	}
 	
 	public String getName() {
@@ -17,8 +18,8 @@ public class LenderDTO implements Comparable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public float getRate() { return rate; }
-	public void setRate(float rate) {
+	public double getRate() { return rate; }
+	public void setRate(double rate) {
 		this.rate = rate;
 	}
 	public int getAvailableFund() {

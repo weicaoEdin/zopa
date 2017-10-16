@@ -8,7 +8,7 @@ public class LendersDAOImpl implements LendersDAO {
 	private int totalAmount;
 
 	@Override
-	public ArrayList getAllLenderList() {
+	public ArrayList<LenderDTO> getAllLenderList() {
 		return new ArrayList(LenderDataSource);
 	}
 
@@ -21,6 +21,7 @@ public class LendersDAOImpl implements LendersDAO {
 	public int getTotalLenderNumber() {
 		return getLenderDataSource().size();
 	}
+
 
 	public SortedSet<LenderDTO> getLenderDataSource() {
 		return LenderDataSource;

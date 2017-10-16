@@ -1,9 +1,13 @@
+import java.util.List;
+
 public interface CaculateServiceInterface {
 	
-	public void quote(int loanAmount);
-	public String generateInfo();
-	public boolean hasSufficientFund(int loanAmount);
-	public boolean isValidAmount(int loanAmount);
-	
+	void quote(int loanAmount);
+	String generateInfo();
+	boolean hasSufficientFund(int loanAmount);
+	boolean isValidAmount(int loanAmount);
+	List<LenderDTO> getLoan(int loanAmount);
+
+
 	
 }
