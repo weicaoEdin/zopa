@@ -1,7 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -15,7 +14,7 @@ public class CalculateServiceImpTest {
     public boolean isValidAmount(int loanAmount);*/
 
 
-    CaculateServiceInterface caculateService;
+    CalculateServiceInterface caculateService;
 
     @Before
     public void setUp(){
@@ -28,7 +27,7 @@ public class CalculateServiceImpTest {
         dataSource.add(l2);
         dataSource.add(l3);
 
-        this.caculateService = new CalculateServiceImp(new LendersDAOImpl(dataSource));
+        this.caculateService = new CalculateServiceImp(new LendersDAOImpl(dataSource), new AmortizationCalculator());
     }
 
     @Test

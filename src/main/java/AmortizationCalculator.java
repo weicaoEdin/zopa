@@ -1,4 +1,4 @@
-public class AmortizationCalculator implements LoanCalculorInterface {
+public class AmortizationCalculator implements LoanCalculatorInterface {
 
 
     @Override

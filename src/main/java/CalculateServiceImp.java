@@ -1,18 +1,19 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalculateServiceImp implements CaculateServiceInterface {
+public class CalculateServiceImp implements CalculateServiceInterface {
 
     private static final int MAX_LOAN = 15000;
     private static final int MIN_LOAN = 1000;
     private static final int INCREMENT = 100;
     private static final int TERM = 36;
 
-    private LoanCalculorInterface loanCalculator;
+    private LoanCalculatorInterface loanCalculator;
     private LendersDAO lendersDAO;
 
-    public CalculateServiceImp(LendersDAO lendersDAO) {
+    public CalculateServiceImp(LendersDAO lendersDAO, LoanCalculatorInterface loanCalculator) {
         this.lendersDAO = lendersDAO;
+        this.loanCalculator = loanCalculator;
     }
 
     public LendersDAO getLendersDAO() {
@@ -24,18 +25,17 @@ public class CalculateServiceImp implements CaculateServiceInterface {
     }
 
     @Override
-    public void quote(int loanAmount) {
+    public DisplayDTO quote(int loanAmount) {
+
+        DisplayDTO displayDTO = new DisplayDTO();
 
         if(isValidAmount(loanAmount) && hasSufficientFund(loanAmount) ){
-
+            List<LenderDTO> result = getLoan(loanAmount);
+            displayDTO = getDisplayDTO(result);
         }
-
+        return displayDTO;
     }
 
-    @Override
-    public String generateInfo() {
-        return null;
-    }
 
     @Override
     public boolean hasSufficientFund(int loanAmount) {
@@ -70,7 +70,7 @@ public class CalculateServiceImp implements CaculateServiceInterface {
         return lenders;
     }
 
-    public DisplayDTO GetDisplayDTO(List<LenderDTO> lenders){
+    public DisplayDTO getDisplayDTO(List<LenderDTO> lenders){
         DisplayDTO displayDTO = new DisplayDTO();
 
         return displayDTO;
