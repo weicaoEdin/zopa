@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +31,12 @@ public class CalculateServiceImp implements CalculateServiceInterface {
         DisplayDTO displayDTO = new DisplayDTO();
 
         if(isValidAmount(loanAmount) && hasSufficientFund(loanAmount) ){
-            List<LenderDTO> result = getLoan(loanAmount);
-            displayDTO = getDisplayDTO(result);
+            ArrayList<LenderDTO> result = getLoan(loanAmount);
+            displayDTO.setLenders(result);
+            displayDTO.setRequestAmount(loanAmount);
+        }else{
+            displayDTO.setError(true);
+            displayDTO.setRequestAmount(loanAmount);
         }
         return displayDTO;
     }
@@ -50,7 +55,7 @@ public class CalculateServiceImp implements CalculateServiceInterface {
         return loanAmount%INCREMENT==0 && loanAmount <= MAX_LOAN && loanAmount >= MIN_LOAN?true:false;
     }
 
-    public List<LenderDTO> getLoan(int loanAmount){
+    public ArrayList<LenderDTO> getLoan(int loanAmount){
 
         int leftAmount = loanAmount;
         ArrayList<LenderDTO> lenders = new ArrayList<LenderDTO>();

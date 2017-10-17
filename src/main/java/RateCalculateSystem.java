@@ -18,22 +18,32 @@ public class RateCalculateSystem {
         RateCalculateSystem rateCalculateSystem = new RateCalculateSystem();
         int requestAmount = Integer.parseInt(args[0]);
         rateCalculateSystem.quote(requestAmount);
+        rateCalculateSystem.display();
+
         System.out.println(requestAmount);
 
 
     }
 
+    private void display() {
+        //this.displayDTO.generateLoanInformation();
+        this.displayDTO.displayLoanInfor();
+    }
+
     private void quote(int requestAmount) {
          this.displayDTO = this.calculatorService.quote(requestAmount);
-         displayDTO.Display();
+         return;
     }
 
     private void Initialise(){
 
         this.sourceProcessor = new CsvScourceProcessor();
         this.dataManager = sourceProcessor.readSource(csvFileLocatoin);
+
         LoanCalculatorInterface loanCalculator = new AmortizationCalculator();
+
         this.calculatorService = new CalculateServiceImp(dataManager, loanCalculator);
+        this.displayDTO = null;
 
     }
 
