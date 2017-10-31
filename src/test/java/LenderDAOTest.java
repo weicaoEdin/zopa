@@ -26,9 +26,9 @@ public class LenderDAOTest {
 
     @Before
     public void setUp(){
-        LenderDTO l1 = new LenderDTO("test1", 0.05f, 1000);
-        LenderDTO l2 = new LenderDTO("test2", 0.01f, 5000);
-        LenderDTO l3 = new LenderDTO("test3", 0.1f, 500);
+        LenderDTO l1 = new LenderDTO("test1", "0.05", "1000");
+        LenderDTO l2 = new LenderDTO("test2", "0.01", "5000");
+        LenderDTO l3 = new LenderDTO("test3", "0.1", "500");
 
         TreeSet dataSource = new TreeSet<LenderDTO>();
         dataSource.add(l1);

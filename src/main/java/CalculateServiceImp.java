@@ -29,14 +29,17 @@ public class CalculateServiceImp implements CalculateServiceInterface {
     public DisplayDTO quote(int loanAmount) {
 
         DisplayDTO displayDTO = new DisplayDTO();
+        displayDTO.setTerms(TERM);
 
-        if(isValidAmount(loanAmount) && hasSufficientFund(loanAmount) ){
-            ArrayList<LenderDTO> result = getLoan(loanAmount);
-            displayDTO.setLenders(result);
-            displayDTO.setRequestAmount(loanAmount);
-        }else{
+        if(!isValidAmount(loanAmount)){
             displayDTO.setError(true);
-            displayDTO.setRequestAmount(loanAmount);
+            displayDTO.setInvalidAmountErrorCode();
+        }else if(!hasSufficientFund(loanAmount)) {
+            displayDTO.setError(true);
+            displayDTO.setSufficientAmountErrorMessage();
+        }else{
+            ArrayList<LenderDTO> result = getLoan(loanAmount, displayDTO);
+            displayDTO.setLenders(result);
         }
         return displayDTO;
     }
@@ -55,14 +58,17 @@ public class CalculateServiceImp implements CalculateServiceInterface {
         return loanAmount%INCREMENT==0 && loanAmount <= MAX_LOAN && loanAmount >= MIN_LOAN?true:false;
     }
 
-    public ArrayList<LenderDTO> getLoan(int loanAmount){
+    private ArrayList<LenderDTO> getLoan(int loanAmount, DisplayDTO displayDTO){
 
         int leftAmount = loanAmount;
-        ArrayList<LenderDTO> lenders = new ArrayList<LenderDTO>();
+        ArrayList<LenderDTO> lenders = new ArrayList<>();
         for(LenderDTO lender :lendersDAO.getAllLenderList()){
             if(leftAmount > 0){
                 lenders.add(lender);
                 if(leftAmount > lender.getAvailableFund()){
+                    loanCalculator.calculateMonthlyPayment(lender.getAvailableFund(),TERM,lender.getRate());
+
+
                     leftAmount = leftAmount-lender.getAvailableFund();
                     lender.setAvailableFund(0);
                 }else{

@@ -23,14 +23,14 @@ public class CSVsourceProcessorTest {
     public void processCSVSourceTest(){
         SortedSet<LenderDTO> data = reader.processCSVSource(csvFileLocatoin);
         assertEquals(3, data.size());
-        assertEquals( new LenderDTO("test1",0.05f, 1000),data.first());
+        assertEquals( new LenderDTO("test1","0.05", "1000"),data.first());
     }
 
     @Test
     public void readSourceTest(){
         LendersDAO data = reader.readSource(csvFileLocatoin);
         assertEquals(3, data.getTotalLenderNumber());
-        assertEquals( new LenderDTO("test1",0.05f, 1000),data.getAllLendersSet().first());
+        assertEquals( new LenderDTO("test1","0.05", "1000"),data.getAllLendersSet().first());
     }
 	
 }

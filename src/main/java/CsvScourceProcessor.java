@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -10,11 +11,12 @@ public class CsvScourceProcessor implements SourceProcessServiceInterface{
 
 		
 		//List<LenderDTO> lendersData = new ArrayList<LenderDTO>();
+    MathContext mathContext = new MathContext(3, RoundingMode.CEILING);
 
 	
 	public SortedSet<LenderDTO> processCSVSource(String csvFile) {
 
-        SortedSet<LenderDTO> lendersDataSet = new TreeSet<LenderDTO>();
+        SortedSet<LenderDTO> lendersDataSet = new TreeSet<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
  
         	String line;
@@ -25,7 +27,7 @@ public class CsvScourceProcessor implements SourceProcessServiceInterface{
                 if(data.length != 3) throw new Exception("invalid CSV file input, Please check file.");
                 
                 String name = data[0];
-                float rate = Float.parseFloat(data[1]);
+                BigDecimal rate = new BigDecimal(data[1],mathContext);
                 int totalFund = Integer.parseInt(data[2]);
                 
                 
@@ -36,6 +38,7 @@ public class CsvScourceProcessor implements SourceProcessServiceInterface{
             }
 
         } catch (IOException e) {
+            System.out.println("data load failed.");
             e.printStackTrace();
         }catch (Exception e){
         	e.printStackTrace();

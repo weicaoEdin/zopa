@@ -6,7 +6,7 @@ public class RateCalculateSystem {
     private LendersDAO dataManager;
     private DisplayDTO displayDTO;
 
-    String csvFileLocatoin = "src/main/resources/TestCSV";
+    private static String csvFileLocatoin = "src/main/resources/TestCSV";
 
     public RateCalculateSystem() {
         Initialise();
@@ -16,11 +16,17 @@ public class RateCalculateSystem {
         // TODO Auto-generated method stub
 
         RateCalculateSystem rateCalculateSystem = new RateCalculateSystem();
-        int requestAmount = Integer.parseInt(args[0]);
-        rateCalculateSystem.quote(requestAmount);
-        rateCalculateSystem.display();
+        try{
+            int requestAmount = Integer.parseInt(args[0]);
+            rateCalculateSystem.quote(requestAmount);
+            rateCalculateSystem.display();
 
-        System.out.println(requestAmount);
+            System.out.println(requestAmount);
+        }catch ( NumberFormatException e){
+            System.out.println("Please provide a valid integer number ");
+        }
+
+
 
 
     }

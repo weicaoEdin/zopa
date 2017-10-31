@@ -1,5 +1,8 @@
+import java.math.BigDecimal;
+
 public interface LoanCalculatorInterface {
 
-    double calculateTotalPayment(int loanAmount, int terms, double rate);
-    double calculateMonthlyPayment(int loanAmount, int terms, double rate);
+    BigDecimal calculateMonthlyPayment(int loanAmount, int terms, BigDecimal rate);
+
+    double calculateMonthlyPayment(int principal, int numberOfPayments, double rate);
 }
