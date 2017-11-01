@@ -1,5 +1,7 @@
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DisplayDTO {
 
@@ -7,7 +9,11 @@ public class DisplayDTO {
     private int requestAmount;
     private BigDecimal rate;
     private BigDecimal monthlyRepayment;
+    private int terms;
+
     private boolean error;
+    private boolean inValidAmount;
+    private boolean sufficientAmount;
 
     public int getTerms() {
         return terms;
@@ -16,25 +22,6 @@ public class DisplayDTO {
     public void setTerms(int terms) {
         this.terms = terms;
     }
-
-    private int terms;
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    private String errorMessage;
-
-    private static final String REQUEST_AMOUMT = "Requested amount: £";
-    private static final String RATE = "Rate: ";
-    private static final String MONTHLY_REPAYMENT = "Monthly repayment: £";
-    private static final String TOTAL_REPAYMENT = "Total repayment: £";
-    private static final String INVALID_AMOUNT_ERROR_MESSAGE = "Sorry, the amount is not valid";
-    private static final String SUFFICIENT_AMOUNT_ERROR_MESSAGE = "Sorry, we don't have enough money";
 
 
     public ArrayList<LenderDTO> getLenders() {
@@ -77,25 +64,24 @@ public class DisplayDTO {
         this.error = error;
     }
 
-    public void displayLoanInfor(){
 
-        if(isError()){
-            System.out.println(getErrorMessage());
-        }else{
-            System.out.println(REQUEST_AMOUMT + getRequestAmount());
-            System.out.println(RATE + getRate());
-            System.out.println(MONTHLY_REPAYMENT+ getMonthlyRepayment());
-            //System.out.println(TOTAL_REPAYMENT+ getTotalPayment());
-        }
-
-
+    public BigDecimal getTotalRepayment() {
+        return monthlyRepayment.multiply(new BigDecimal(terms));
     }
 
-    public void setInvalidAmountErrorCode() {
-        this.errorMessage = INVALID_AMOUNT_ERROR_MESSAGE;
+    public boolean isInValidAmount() {
+        return inValidAmount;
     }
 
-    public void setSufficientAmountErrorMessage() {
-        this.errorMessage = SUFFICIENT_AMOUNT_ERROR_MESSAGE;
+    public boolean isSufficientAmount() {
+        return sufficientAmount;
+    }
+
+    public void setInvalidAmountError() {
+        this.inValidAmount = true;
+    }
+
+    public void setSufficientAmountError() {
+        this.sufficientAmount =true;
     }
 }

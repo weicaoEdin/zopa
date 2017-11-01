@@ -3,8 +3,7 @@ public class RateCalculateSystem {
 
     private SourceProcessServiceInterface sourceProcessor;
     private CalculateServiceInterface calculatorService;
-    private LendersDAO dataManager;
-    private DisplayDTO displayDTO;
+    private DisplayInformationService displayInformationService;
 
     private static String csvFileLocatoin = "src/main/resources/TestCSV";
 
@@ -17,9 +16,11 @@ public class RateCalculateSystem {
 
         RateCalculateSystem rateCalculateSystem = new RateCalculateSystem();
         try{
-            int requestAmount = Integer.parseInt(args[0]);
-            rateCalculateSystem.quote(requestAmount);
-            rateCalculateSystem.display();
+            //int requestAmount = Integer.parseInt(args[0]);
+            int requestAmount = Integer.parseInt("2000");
+
+            DisplayDTO displayDTO = rateCalculateSystem.quote(requestAmount);
+            rateCalculateSystem.display(displayDTO);
 
             System.out.println(requestAmount);
         }catch ( NumberFormatException e){
@@ -31,25 +32,22 @@ public class RateCalculateSystem {
 
     }
 
-    private void display() {
-        //this.displayDTO.generateLoanInformation();
-        this.displayDTO.displayLoanInfor();
+    private void display(DisplayDTO displayDTO) {
+        this.displayInformationService.displayLoanInfor(displayDTO);
     }
 
-    private void quote(int requestAmount) {
-         this.displayDTO = this.calculatorService.quote(requestAmount);
-         return;
+    private DisplayDTO quote(int requestAmount) {
+         return calculatorService.quote(requestAmount);
+
     }
 
     private void Initialise(){
 
         this.sourceProcessor = new CsvScourceProcessor();
-        this.dataManager = sourceProcessor.readSource(csvFileLocatoin);
+        LendersDAO dataManager = sourceProcessor.readSource(csvFileLocatoin);
 
-        LoanCalculatorInterface loanCalculator = new AmortizationCalculator();
-
-        this.calculatorService = new CalculateServiceImp(dataManager, loanCalculator);
-        this.displayDTO = null;
+        this.calculatorService = new CalculateServiceImp(dataManager);
+        this.displayInformationService = new DisplayInformationService();
 
     }
 

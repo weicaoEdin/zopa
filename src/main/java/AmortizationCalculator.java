@@ -13,22 +13,20 @@ public class AmortizationCalculator implements LoanCalculatorInterface {
     @Override
     public BigDecimal calculateMonthlyPayment(int principal, int numberOfPayments, BigDecimal rate) {
 
-        MathContext mathContext = new MathContext(3, RoundingMode.HALF_UP);
+        MathContext mathContext = new MathContext(7, RoundingMode.HALF_DOWN);
 
         if(rate.compareTo(BigDecimal.ZERO)==0)
             return new BigDecimal(principal).divide(new BigDecimal(numberOfPayments),mathContext);
 
-        BigDecimal effectiveRate = rate.divide(new BigDecimal(12),mathContext);
-        double effectiveRate1 = rate.divide(new BigDecimal(numberOfPayments)).doubleValue();
+        BigDecimal montlyRate = rate.divide(new BigDecimal(12),mathContext);
 
-        BigDecimal p1 = effectiveRate.add(BigDecimal.ONE).pow(numberOfPayments,mathContext).subtract(BigDecimal.ONE);
-        //return singlePayment = effectiveRate.divide(p1,mathContext).add(effectiveRate).multiply(new BigDecimal(principal),mathContext);
-
-        double singlePayment = principal*effectiveRate1/(1-Math.pow((1+effectiveRate1),-numberOfPayments));
-        return new BigDecimal(singlePayment,mathContext).setScale(2);
-        //double singlePayment = principal*effectiveRate/(1-Math.pow((1+effectiveRate),-numberOfPayments))
         //double singlePayment1 = principal*(effectiveRate+effectiveRate/(Math.pow(1+effectiveRate,numberOfPayments)-1));
-        //double singlePayment2 = principal*effectiveRate*Math.pow(1+effectiveRate,numberOfPayments)/(Math.pow(1+effectiveRate,numberOfPayments)-1)
+        BigDecimal p1 = montlyRate.add(BigDecimal.ONE).pow(numberOfPayments,mathContext).subtract(BigDecimal.ONE);
+        BigDecimal singlePayment = montlyRate.add(montlyRate.divide(p1,mathContext)).multiply(new BigDecimal(principal),mathContext);
+
+        return singlePayment;
+
+
 
     }
 

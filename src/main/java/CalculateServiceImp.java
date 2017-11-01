@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,29 +18,32 @@ public class CalculateServiceImp implements CalculateServiceInterface {
         this.loanCalculator = loanCalculator;
     }
 
+    public CalculateServiceImp(LendersDAO lendersDAO) {
+        this.lendersDAO = lendersDAO;
+        this.loanCalculator = new AmortizationCalculator();
+    }
+
+
     public LendersDAO getLendersDAO() {
         return lendersDAO;
     }
 
-    public void setLendersDAO(LendersDAO lendersDAO) {
-        this.lendersDAO = lendersDAO;
-    }
 
     @Override
     public DisplayDTO quote(int loanAmount) {
 
         DisplayDTO displayDTO = new DisplayDTO();
         displayDTO.setTerms(TERM);
+        displayDTO.setRequestAmount(loanAmount);
 
         if(!isValidAmount(loanAmount)){
             displayDTO.setError(true);
-            displayDTO.setInvalidAmountErrorCode();
+            displayDTO.setInvalidAmountError();
         }else if(!hasSufficientFund(loanAmount)) {
             displayDTO.setError(true);
-            displayDTO.setSufficientAmountErrorMessage();
+            displayDTO.setSufficientAmountError();
         }else{
-            ArrayList<LenderDTO> result = getLoan(loanAmount, displayDTO);
-            displayDTO.setLenders(result);
+            getLoan(loanAmount, displayDTO);
         }
         return displayDTO;
     }
@@ -58,33 +62,32 @@ public class CalculateServiceImp implements CalculateServiceInterface {
         return loanAmount%INCREMENT==0 && loanAmount <= MAX_LOAN && loanAmount >= MIN_LOAN?true:false;
     }
 
-    private ArrayList<LenderDTO> getLoan(int loanAmount, DisplayDTO displayDTO){
+    private void getLoan(int loanAmount, DisplayDTO displayDTO){
 
         int leftAmount = loanAmount;
+        BigDecimal monthlyPayment = BigDecimal.ZERO;
+
         ArrayList<LenderDTO> lenders = new ArrayList<>();
         for(LenderDTO lender :lendersDAO.getAllLenderList()){
             if(leftAmount > 0){
                 lenders.add(lender);
                 if(leftAmount > lender.getAvailableFund()){
-                    loanCalculator.calculateMonthlyPayment(lender.getAvailableFund(),TERM,lender.getRate());
-
-
+                   monthlyPayment = monthlyPayment.add(
+                           loanCalculator.calculateMonthlyPayment(lender.getAvailableFund(),TERM,lender.getRate())
+                   );
                     leftAmount = leftAmount-lender.getAvailableFund();
                     lender.setAvailableFund(0);
                 }else{
                     lender.setAvailableFund(lender.getAvailableFund()-leftAmount);
+                    monthlyPayment = monthlyPayment.add(
+                            loanCalculator.calculateMonthlyPayment(leftAmount,TERM,lender.getRate())
+                    );
                     leftAmount = 0;
-                    break;
                 }
             }
         }
-        return lenders;
-    }
-
-    public DisplayDTO getDisplayDTO(List<LenderDTO> lenders){
-        DisplayDTO displayDTO = new DisplayDTO();
-
-        return displayDTO;
+        displayDTO.setMonthlyRepayment(monthlyPayment);
+        displayDTO.setLenders(lenders);
     }
 
 }
