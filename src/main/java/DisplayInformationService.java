@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -9,7 +10,8 @@ public class DisplayInformationService {
     private static final String RATE = "Rate: ";
     private static final String MONTHLY_REPAYMENT = "Monthly repayment: ";
     private static final String TOTAL_REPAYMENT = "Total repayment: ";
-    private static final String INVALID_AMOUNT_ERROR_MESSAGE = "Sorry, the amount is not valid";
+    private static final String INVALID_AMOUNT_ERROR_MESSAGE = "Sorry, the amount is not valid. It has to be multiple of 100," +
+            "and between 1000 and 15000";
     private static final String SUFFICIENT_AMOUNT_ERROR_MESSAGE = "Sorry, we don't have enough money";
 
 
@@ -18,15 +20,13 @@ public class DisplayInformationService {
         if(displayDTO.isError()){
             System.out.println(getErrorMessage(displayDTO));
         }else{
-            System.out.println(REQUEST_AMOUMT + printCurrency(displayDTO.getRequestAmount()));
-            //System.out.println(RATE + printRate(rate));
-            System.out.println(MONTHLY_REPAYMENT+ printCurrency(displayDTO.getMonthlyRepayment()));
-            System.out.println(TOTAL_REPAYMENT + printCurrency(displayDTO.getTotalRepayment()));
+            System.out.println(REQUEST_AMOUMT + printRequestAmount(displayDTO));
+            System.out.println(RATE + printRate(displayDTO));
+            System.out.println(MONTHLY_REPAYMENT+ printMonthlyPayment(displayDTO));
+            System.out.println(TOTAL_REPAYMENT + printTotalRepayment(displayDTO));
         }
 
-
     }
-
 
 
     private String getErrorMessage(DisplayDTO displayDTO){
@@ -42,24 +42,40 @@ public class DisplayInformationService {
     }
 
 
-    public String printCurrency(BigDecimal value){
+    private String printCurrency(BigDecimal value){
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.UK);
-        return format.format(value.setScale(2).toString());
+        return format.format(value.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
     }
 
-    public String printCurrency(int value){
+    private String printCurrency(int value){
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.UK);
         return format.format(value);
     }
 
-/*    public String printRate(LenderDTO lenderDTO){
-        NumberFormat format = NumberFormat.getPercentInstance(Locale.UK);
-        StringBuffer rates = new StringBuffer();
-        for(LenderDTO lender : lenders){
-            rates.append(format.format(rate.setScale(3).toString())).append("@").append(lender.getLentAmount());
-        }
-        return rates.toString();
 
-    }*/
+    public String printRate(DisplayDTO displayDTO){
+        NumberFormat format = NumberFormat.getPercentInstance(Locale.UK);
+        StringBuilder allRates = new StringBuilder();
+        for(LenderDTO lender : displayDTO.getLenders()){
+            allRates.append(format.format(lender.getRate().setScale(3,BigDecimal.ROUND_HALF_UP)))
+                    .append(" of ")
+                    .append(printCurrency(lender.getLentAmount())).
+                    append(", ");
+        }
+        return allRates.toString();
+
+    }
+
+    public String printRequestAmount(DisplayDTO displayDTO){
+        return printCurrency(displayDTO.getRequestAmount());
+    }
+
+    public String printMonthlyPayment(DisplayDTO displayDTO){
+        return printCurrency(displayDTO.getMonthlyRepayment());
+    }
+
+    public String printTotalRepayment(DisplayDTO displayDTO){
+        return printCurrency(displayDTO.getTotalRepayment());
+    }
 
 }

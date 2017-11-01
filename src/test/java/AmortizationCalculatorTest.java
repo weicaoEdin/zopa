@@ -20,11 +20,6 @@ public class AmortizationCalculatorTest {
         assertEquals(new BigDecimal("30.78").setScale(2),singlePayment);
     }
 
-    @Test
-    public void calculateSingleLoanTest(){
-        double singlePayment = amortizationCalculator.calculateMonthlyPayment(1000,36, 0.07);
-        assertEquals(new BigDecimal("30.78").setScale(2),singlePayment);
-    }
 
 
 /*

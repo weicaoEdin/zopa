@@ -8,7 +8,6 @@ public class LenderDTO implements Comparable<LenderDTO>{
 	private BigDecimal rate;
 	private int availableFund;
 	private int totalFund;
-	private static MathContext mathContext = new MathContext(3, RoundingMode.CEILING);
 	
 	public LenderDTO(String name, BigDecimal rate, int totalFund){
 		this.name = name;
@@ -18,7 +17,7 @@ public class LenderDTO implements Comparable<LenderDTO>{
 	}
 
 	public LenderDTO(String name, String rate, String totalFund){
-		this(name, new BigDecimal(rate,mathContext),Integer.parseInt(totalFund));
+		this(name, new BigDecimal(rate,RateCalculateSystem.mathContext),Integer.parseInt(totalFund));
 	}
 	public LenderDTO(){
 

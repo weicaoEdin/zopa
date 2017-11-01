@@ -1,3 +1,6 @@
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 public class RateCalculateSystem {
 
 
@@ -6,6 +9,7 @@ public class RateCalculateSystem {
     private DisplayInformationService displayInformationService;
 
     private static String csvFileLocatoin = "src/main/resources/TestCSV";
+    public static final MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP);
 
     public RateCalculateSystem() {
         Initialise();
@@ -17,7 +21,7 @@ public class RateCalculateSystem {
         RateCalculateSystem rateCalculateSystem = new RateCalculateSystem();
         try{
             //int requestAmount = Integer.parseInt(args[0]);
-            int requestAmount = Integer.parseInt("2000");
+            int requestAmount = Integer.parseInt("1000");
 
             DisplayDTO displayDTO = rateCalculateSystem.quote(requestAmount);
             rateCalculateSystem.display(displayDTO);

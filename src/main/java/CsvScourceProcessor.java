@@ -9,11 +9,9 @@ import java.util.TreeSet;
 
 public class CsvScourceProcessor implements SourceProcessServiceInterface{
 
-		
-		//List<LenderDTO> lendersData = new ArrayList<LenderDTO>();
-    MathContext mathContext = new MathContext(3, RoundingMode.CEILING);
-
-	
+	/*
+	Use SortedSet to keep rate in ascending order
+	 */
 	public SortedSet<LenderDTO> processCSVSource(String csvFile) {
 
         SortedSet<LenderDTO> lendersDataSet = new TreeSet<>();
@@ -27,12 +25,11 @@ public class CsvScourceProcessor implements SourceProcessServiceInterface{
                 if(data.length != 3) throw new Exception("invalid CSV file input, Please check file.");
                 
                 String name = data[0];
-                BigDecimal rate = new BigDecimal(data[1],mathContext);
+                BigDecimal rate = new BigDecimal(data[1],RateCalculateSystem.mathContext);
                 int totalFund = Integer.parseInt(data[2]);
                 
                 
                 LenderDTO lenderData = new LenderDTO(name,rate,totalFund);
-                //lendersData.add(lenderData);
                 lendersDataSet.add(lenderData);
 
             }
