@@ -13,7 +13,7 @@ public class AmortizationCalculator implements LoanCalculatorInterface {
         if(rate.compareTo(BigDecimal.ZERO)==0)
             return new BigDecimal(principal).divide(new BigDecimal(numberOfPayments),mathContext);
 
-        BigDecimal montlyRate = rate.divide(new BigDecimal(12),mathContext);
+        BigDecimal monthlyRate = rate.divide(new BigDecimal(12),mathContext);
 
         /*
         using following formula to calculate monthlyPayment, this fomula is from wiki :
@@ -22,8 +22,8 @@ public class AmortizationCalculator implements LoanCalculatorInterface {
         singlePayment1 = principal*(effectiveRate+effectiveRate/(Math.pow(1+effectiveRate,numberOfPayments)-1));
 
          */
-        BigDecimal p1 = montlyRate.add(BigDecimal.ONE).pow(numberOfPayments,mathContext).subtract(BigDecimal.ONE);
-        BigDecimal singlePayment = montlyRate.add(montlyRate.divide(p1,mathContext)).multiply(new BigDecimal(principal),mathContext);
+        BigDecimal p1 = monthlyRate.add(BigDecimal.ONE).pow(numberOfPayments,mathContext).subtract(BigDecimal.ONE);
+        BigDecimal singlePayment = monthlyRate.add(monthlyRate.divide(p1,mathContext)).multiply(new BigDecimal(principal),mathContext);
 
         return singlePayment.setScale(2,RoundingMode.HALF_UP);
 
