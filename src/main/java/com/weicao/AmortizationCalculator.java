@@ -1,3 +1,5 @@
+package com.weicao;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -37,8 +39,6 @@ public class AmortizationCalculator implements LoanCalculatorInterface {
         if(rate == 0) return principal/numberOfPayments;
 
         double effectiveRate = new BigDecimal(rate/12, mathContext).doubleValue();
-
-
 
         double singlePayment = principal*effectiveRate/(1-Math.pow((1+effectiveRate),-numberOfPayments));
         //double singlePayment1 = principal*(effectiveRate+effectiveRate/(Math.pow(1+effectiveRate,numberOfPayments)-1));

@@ -1,13 +1,13 @@
+package com.weicao;
+
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.math.MathContext;
 
 public class LenderDTO implements Comparable<LenderDTO>{
 	
-	private String name;
-	private BigDecimal rate;
+	private final String name;
+	private final BigDecimal rate;
+	private final int totalFund;
 	private int availableFund;
-	private int totalFund;
 	
 	public LenderDTO(String name, BigDecimal rate, int totalFund){
 		this.name = name;
@@ -17,27 +17,25 @@ public class LenderDTO implements Comparable<LenderDTO>{
 	}
 
 	public LenderDTO(String name, String rate, String totalFund){
-		this(name, new BigDecimal(rate,RateCalculateSystem.mathContext),Integer.parseInt(totalFund));
+		this(name, new BigDecimal(rate, RateCalculateSystem.mathContext),Integer.parseInt(totalFund));
 	}
-	public LenderDTO(){
 
-	}
-	
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public BigDecimal getRate() { return rate; }
-	public void setRate(BigDecimal rate) {
-		this.rate = rate;
-	}
 	public int getAvailableFund() {
 		return availableFund;
 	}
+	public int getTotalFund() {
+		return totalFund;
+	}
+
 	public void setAvailableFund(int availableFund) {
 		this.availableFund = availableFund;
+	}
+	public int getLentAmount(){
+		return totalFund-availableFund;
 	}
 	
 	@Override
@@ -61,18 +59,5 @@ public class LenderDTO implements Comparable<LenderDTO>{
 		// TODO Auto-generated method stub
 		return getRate().compareTo(o.getRate());
 	}
-
-	public int getTotalFund() {
-		return totalFund;
-	}
-
-	public void setTotalFund(int totalFund) {
-		this.totalFund = totalFund;
-	}
-
-	public int getLentAmount(){
-		return totalFund-availableFund;
-	}
-
 	
 }

@@ -1,24 +1,24 @@
+package com.weicao;
+
+import com.weicao.DisplayDTO;
+
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class DisplayInformationService {
+public class DisplayInformationService implements DisplayInformationServiceInterface {
 
 
     private static final String REQUEST_AMOUMT = "Requested amount: ";
     private static final String RATE = "Rate: ";
     private static final String MONTHLY_REPAYMENT = "Monthly repayment: ";
     private static final String TOTAL_REPAYMENT = "Total repayment: ";
-    private static final String INVALID_AMOUNT_ERROR_MESSAGE = "Sorry, the amount is not valid. It has to be multiple of 100," +
-            "and between 1000 and 15000";
-    private static final String SUFFICIENT_AMOUNT_ERROR_MESSAGE = "Sorry, we don't have enough money";
 
-
+    @Override
     public void displayLoanInfor(DisplayDTO displayDTO) {
 
-        if(displayDTO.isError()){
-            System.out.println(getErrorMessage(displayDTO));
+        if(displayDTO.getError() != null){
+            System.out.println(displayDTO.getError());
         }else{
             System.out.println(REQUEST_AMOUMT + printRequestAmount(displayDTO));
             System.out.println(RATE + printRate(displayDTO));
@@ -26,19 +26,6 @@ public class DisplayInformationService {
             System.out.println(TOTAL_REPAYMENT + printTotalRepayment(displayDTO));
         }
 
-    }
-
-
-    private String getErrorMessage(DisplayDTO displayDTO){
-        String errorMessage = "";
-        if(displayDTO.isInValidAmount()){
-            errorMessage = INVALID_AMOUNT_ERROR_MESSAGE;
-        }else if(displayDTO.isSufficientAmount()){
-            errorMessage = SUFFICIENT_AMOUNT_ERROR_MESSAGE;
-        }else{
-            errorMessage = "there is something wrong with a amount";
-        }
-        return errorMessage;
     }
 
 
@@ -53,7 +40,7 @@ public class DisplayInformationService {
     }
 
 
-    public String printRate(DisplayDTO displayDTO){
+    private String printRate(DisplayDTO displayDTO){
         NumberFormat format = NumberFormat.getPercentInstance(Locale.UK);
         StringBuilder allRates = new StringBuilder();
         for(LenderDTO lender : displayDTO.getLenders()){
@@ -66,15 +53,16 @@ public class DisplayInformationService {
 
     }
 
-    public String printRequestAmount(DisplayDTO displayDTO){
+
+    private String printRequestAmount(DisplayDTO displayDTO){
         return printCurrency(displayDTO.getRequestAmount());
     }
 
-    public String printMonthlyPayment(DisplayDTO displayDTO){
+    private String printMonthlyPayment(DisplayDTO displayDTO){
         return printCurrency(displayDTO.getMonthlyRepayment());
     }
 
-    public String printTotalRepayment(DisplayDTO displayDTO){
+    private String printTotalRepayment(DisplayDTO displayDTO){
         return printCurrency(displayDTO.getTotalRepayment());
     }
 

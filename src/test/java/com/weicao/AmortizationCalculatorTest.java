@@ -1,3 +1,7 @@
+package com.weicao;
+
+import com.weicao.AmortizationCalculator;
+import com.weicao.LoanCalculatorInterface;
 import org.junit.Before;
 import org.junit.Test;
 

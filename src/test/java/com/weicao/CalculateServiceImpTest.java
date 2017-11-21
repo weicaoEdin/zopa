@@ -1,8 +1,9 @@
+package com.weicao;
+
+import com.weicao.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
@@ -15,7 +16,7 @@ public class CalculateServiceImpTest {
     public boolean isValidAmount(int loanAmount);*/
 
 
-    CalculateServiceInterface caculateService;
+    private CalculateServiceInterface caculateService;
 
     @Before
     public void setUp(){
@@ -23,7 +24,7 @@ public class CalculateServiceImpTest {
         LenderDTO l2 = new LenderDTO("test2", "0.4", "1000");
         LenderDTO l3 = new LenderDTO("test3", "0.3", "500");
 
-        TreeSet dataSource = new TreeSet<LenderDTO>();
+        TreeSet<LenderDTO> dataSource = new TreeSet<>();
         dataSource.add(l1);
         dataSource.add(l2);
         dataSource.add(l3);

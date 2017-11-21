@@ -1,3 +1,5 @@
+package com.weicao;
+
 import java.util.List;
 
 public interface CalculateServiceInterface {

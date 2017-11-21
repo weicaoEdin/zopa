@@ -1,3 +1,5 @@
+package com.weicao;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -11,9 +13,15 @@ public class DisplayDTO {
     private BigDecimal monthlyRepayment;
     private int terms;
 
-    private boolean error;
-    private boolean inValidAmount;
-    private boolean sufficientAmount;
+    public ERROR getError() {
+        return error;
+    }
+
+    public void setError(ERROR error) {
+        this.error = error;
+    }
+
+    ERROR error;
 
     public int getTerms() {
         return terms;
@@ -56,32 +64,9 @@ public class DisplayDTO {
         this.monthlyRepayment = monthlyRepayment;
     }
 
-    public boolean isError() {
-        return error;
-    }
-
-    public void setError(boolean error) {
-        this.error = error;
-    }
-
-
     public BigDecimal getTotalRepayment() {
         return monthlyRepayment.multiply(new BigDecimal(terms));
     }
 
-    public boolean isInValidAmount() {
-        return inValidAmount;
-    }
 
-    public boolean isSufficientAmount() {
-        return sufficientAmount;
-    }
-
-    public void setInvalidAmountError() {
-        this.inValidAmount = true;
-    }
-
-    public void setSufficientAmountError() {
-        this.sufficientAmount =true;
-    }
 }

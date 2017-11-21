@@ -1,7 +1,7 @@
-import java.lang.reflect.Array;
+package com.weicao;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CalculateServiceImp implements CalculateServiceInterface {
 
@@ -37,11 +37,9 @@ public class CalculateServiceImp implements CalculateServiceInterface {
         displayDTO.setRequestAmount(loanAmount);
 
         if(!isValidAmount(loanAmount)){
-            displayDTO.setError(true);
-            displayDTO.setInvalidAmountError();
+            displayDTO.setError(ERROR.INVALID_AMOUNT);
         }else if(!hasSufficientFund(loanAmount)) {
-            displayDTO.setError(true);
-            displayDTO.setSufficientAmountError();
+            displayDTO.setError(ERROR.INSUFFICIENT_FUND);
         }else{
             getLoan(loanAmount, displayDTO);
         }
@@ -59,7 +57,7 @@ public class CalculateServiceImp implements CalculateServiceInterface {
 
     @Override
     public boolean isValidAmount(int loanAmount) {
-        return loanAmount%INCREMENT==0 && loanAmount <= MAX_LOAN && loanAmount >= MIN_LOAN?true:false;
+        return loanAmount%INCREMENT==0 && loanAmount <= MAX_LOAN && loanAmount >= MIN_LOAN;
     }
 
     private void getLoan(int loanAmount, DisplayDTO displayDTO){

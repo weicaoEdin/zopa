@@ -1,14 +1,15 @@
+package com.weicao;
+
 import java.util.*;
 
 public class LendersDAOImpl implements LendersDAO {
 
-	private SortedSet<LenderDTO> LenderDataSource;
+	private final SortedSet<LenderDTO> LenderDataSource;
 	private int totalAvailableAmount;
-	private int totalLentAmount;
 	private int totalAmount;
 
 	@Override
-	public ArrayList<LenderDTO> getAllLenderList() {
+	public List<LenderDTO> getAllLenderList() {
 		return new ArrayList(LenderDataSource);
 	}
 
@@ -22,7 +23,6 @@ public class LendersDAOImpl implements LendersDAO {
 		return getLenderDataSource().size();
 	}
 
-
 	public SortedSet<LenderDTO> getLenderDataSource() {
 		return LenderDataSource;
 	}
@@ -32,10 +32,6 @@ public class LendersDAOImpl implements LendersDAO {
 		setAmount();
 	}
 
-	public LendersDAOImpl() {
-		this(new TreeSet<LenderDTO>());
-	}
-
 	private void setAmount(){
 		for(LenderDTO d : LenderDataSource){
 			this.totalAmount += d.getTotalFund();
@@ -43,19 +39,9 @@ public class LendersDAOImpl implements LendersDAO {
 		totalAvailableAmount = totalAmount;
 	}
 
-	public void setLenderDataSource(SortedSet<LenderDTO> lenderDataSource) {
-		LenderDataSource = lenderDataSource;
-	}
-
-
 	@Override
 	public int getTotalAvailableAmount() {
 		return totalAvailableAmount;
-	}
-
-	@Override
-	public int getTotalLentAmount() {
-		return totalLentAmount;
 	}
 
 	@Override
