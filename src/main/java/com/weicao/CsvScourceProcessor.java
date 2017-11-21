@@ -46,4 +46,9 @@ public class CsvScourceProcessor implements SourceProcessServiceInterface {
 
 	}
 
+	public boolean validateRate(BigDecimal rate){
+	    return rate.compareTo(BigDecimal.ZERO) >= 0 || rate.compareTo(BigDecimal.ONE) <= 0;
+    }
+
+
 }

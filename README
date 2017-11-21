@@ -1,0 +1,31 @@
+RateCaculateSystem
+
+How to run:
+excute the from command line : java -jar RateCaculateSystem.jar [request amount]
+The command line take 1 number parameter request amount, for example:
+java -jar RateCaculateSystem.jar 500
+
+method to calculate loan:
+
+using following formula to calculate monthlyPayment, this fomula is from wiki :
+https://en.wikipedia.org/wiki/Amortization_calculator
+singlePayment1 = principal*(effectiveRate+effectiveRate/(Math.pow(1+effectiveRate,numberOfPayments)-1));
+
+
+I cannot find a way to pass the test in the document, which is
+
+Requested amount: £1000
+Rate: 7.0%
+Monthly repayment: £30.78
+Total repayment: £1108.10
+
+the nearest result is 30.88, which is same from some online calculator.
+
+I cannot figure out how to normalise the different rate to one rate, in this case, I print all the different rate on which
+borrowed.
+
+
+
+
+
+
