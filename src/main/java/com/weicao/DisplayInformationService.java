@@ -42,6 +42,7 @@ public class DisplayInformationService implements DisplayInformationServiceInter
 
     private String printRate(DisplayDTO displayDTO){
         NumberFormat format = NumberFormat.getPercentInstance(Locale.UK);
+        format.setMaximumFractionDigits(3);
         StringBuilder allRates = new StringBuilder();
         for(LenderDTO lender : displayDTO.getLenders()){
             allRates.append(format.format(lender.getRate().setScale(3,BigDecimal.ROUND_HALF_UP)))

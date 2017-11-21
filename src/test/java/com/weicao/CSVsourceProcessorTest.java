@@ -2,28 +2,24 @@ package com.weicao;
 
 import org.junit.Test;
 
+import java.util.List;
+import java.util.SortedSet;
+
 import static org.junit.Assert.assertEquals;
 
 
 public class CSVsourceProcessorTest {
 	
-	private CsvScourceProcessor reader = new CsvScourceProcessor();
-	private String csvFileLocatoin = "TestCSV";
-	
-/*	@Test
-	public void processCSVSourceTest(){
-		List<LenderDTO> data = reader.readSource(csvFileLocatoin);
-        assertEquals(3, data.size());
-        assertEquals("test1",data.get(0).getName());
-        assertEquals(0.05,data.get(0).getRate(),0.00001);
-        assertEquals(1000,data.get(0).getTotalFund());
-	}*/
+	CsvScourceProcessor reader = new CsvScourceProcessor();
+	//String csvFileLocatoin = "src/main/resources/TestCSV";
+	String csvFileLocatoin = "src/test/resources/TestCSV";
+
 
     @Test
     public void processCSVSourceTest() throws InvalidSourceFileException {
-        LendersDAO lendersDAO= reader.readSource(csvFileLocatoin);
-        assertEquals(3, lendersDAO.getAllLenderList().size());
-        assertEquals( new LenderDTO("test1","0.05", "1000"),lendersDAO.getAllLendersSet().first());
+        LendersDAO data = reader.readSource(csvFileLocatoin);
+        assertEquals(3, data.getAllLenderList().size());
+        assertEquals( new LenderDTO("test1","0.05", "1000"),data.getAllLendersSet().first());
     }
 
     @Test

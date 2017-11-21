@@ -11,7 +11,6 @@ public class RateCalculateSystem {
     private static CalculateServiceInterface calculatorService;
     private static DisplayInformationServiceInterface displayInformationService;
 
-    private static final String CSV_FILE = "TestCSV";
     public static final MathContext mathContext = new MathContext(7, RoundingMode.HALF_UP);
 
     private RateCalculateSystem() {
@@ -25,11 +24,18 @@ public class RateCalculateSystem {
         rateCalculateSystem = new RateCalculateSystem();
         try{
 
-            int requestAmount = Integer.parseInt("1000");//used for IDE test
+            //used for IDE test
+            //int requestAmount = Integer.parseInt("1000");
+            //String CSV_FILE = "src/main/resources/TestCSV";
+
+            //used for runnable jar
+            int requestAmount = Integer.parseInt(args[1]);
+            String CSV_FILE = args[0];
+
+
 
             LendersDAO dataManager = sourceProcessor.readSource(CSV_FILE);
             calculatorService = new CalculateServiceImp(dataManager);
-
 
 
             DisplayDTO displayDTO = rateCalculateSystem.quote(requestAmount);

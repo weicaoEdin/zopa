@@ -1,6 +1,7 @@
 package com.weicao;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -13,12 +14,13 @@ public class CsvScourceProcessor implements SourceProcessServiceInterface {
 	public LendersDAO readSource (String csvFile) throws InvalidSourceFileException {
 
         SortedSet<LenderDTO> lendersDataSet = new TreeSet<>();
+        //ClassLoader classLoader = getClass().getClassLoader();
 
-       ClassLoader classLoader = getClass().getClassLoader();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(classLoader.getResource(csvFile).getFile()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        //try (BufferedReader br = new BufferedReader(new FileReader(classLoader.getResource(csvFile).getFile()))) {
 
         	String line;
+            br.readLine();//escape header line
             while ((line = br.readLine()) != null) {
 
                 // use comma as separator
@@ -36,11 +38,7 @@ public class CsvScourceProcessor implements SourceProcessServiceInterface {
 
             }
 
-        }catch (IOException e) {
-            System.out.println("data load failed. Invalid csv file");
-            throw new InvalidSourceFileException();
         }catch (Exception e){
-            System.out.println("data load failed. Data in csv file is invalid");
         	throw new InvalidSourceFileException();
         }
 
